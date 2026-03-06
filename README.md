@@ -28,3 +28,68 @@ Une fois Flutter installé, ouvrez le dossier du projet `MyLaboAccess` dans VS C
 
 ```powershell
 flutter pub get
+```
+
+## ⚙️ Étape 2 : Préparation du Back-end (Laragon)
+
+L'application Flutter a besoin de communiquer avec une API PHP locale.
+
+1. Dans les fichiers de ce projet, trouvez le dossier `server-samples/mylabo_api`.
+2. **Copiez** le dossier `mylabo_api` complet.
+3. **Collez-le** dans le répertoire web de Laragon, par défaut : `C:\laragon\www\`.
+*(Vous devriez avoir `C:\laragon\www\mylabo_api\register.php`, etc.)*
+4. Lancez **Laragon** et cliquez sur **Start All** (Tout démarrer).
+
+## 🗄️ Étape 3 : Création de la base de données
+
+1. Depuis Laragon, cliquez sur le bouton **Database** (ou allez sur `http://localhost/phpmyadmin`).
+2. Ouvrez un nouvel onglet de requête SQL.
+3. Copiez, collez et exécutez le code SQL suivant pour créer la base `mylaboipi` et ses tables :
+
+```SQL
+CREATE DATABASE IF NOT EXISTS `mylaboipi` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `mylaboipi`;
+
+CREATE TABLE `users` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `nom` VARCHAR(200) NOT NULL,
+  `email` VARCHAR(200),
+  `password_hash` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `reports` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `contenu` TEXT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+);
+```
+
+## 🔗 Étape 4 : Configuration de l'Application Flutter
+
+Il faut maintenant indiquer à l'application où se trouve l'API.
+
+1. Dans VS Code, ouvrez le fichier `lib/config.dart`.
+2. Vérifiez que la variable `apiBaseUrl` pointe bien vers votre serveur local Laragon :
+
+```Dart
+// Pour une exécution sur le navigateur web (Chrome) avec Laragon :
+const String apiBaseUrl = '[http://127.0.0.1/mylabo_api](http://127.0.0.1/mylabo_api)';
+
+// Note : Si vous utilisez un émulateur Android plus tard, il faudra utiliser :
+// const String apiBaseUrl = '[http://10.0.2.2/mylabo_api](http://10.0.2.2/mylabo_api)';
+```
+
+## ▶️ Étape 5 : Lancement et Tests
+
+Tout est prêt ! Assurez-vous que Laragon est en cours d'exécution, puis lancez l'application depuis le terminal de VS Code :
+
+```PowerShell
+flutter run -d chrome
+```
+
+Une fenêtre Google Chrome va s'ouvrir avec l'application.
+
+**Test rapide** : Essayez de créer un compte via l'interface d'inscription de l'application. Si le compte se crée, la liaison entre Flutter, PHP et MySQL fonctionne parfaitement ! 🎉
