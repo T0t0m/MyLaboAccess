@@ -24,7 +24,7 @@ Si Flutter n'est pas encore installé sur votre machine, la méthode la plus sim
 4. **Important :** À la fin, cliquez sur la notification **"Ajouter le SDK au PATH"**.
 5. Redémarrez VS Code.
 
-Une fois Flutter installé, ouvrez le dossier du projet `MyLaboAccess` dans VS Code, ouvrez un terminal et téléchargez les dépendances :
+Une fois Flutter installé, ouvrez le dossier du projet `apps/frontend` dans VS Code, ouvrez un terminal et téléchargez les dépendances :
 
 ```powershell
 flutter pub get
@@ -34,10 +34,10 @@ flutter pub get
 
 L'application Flutter a besoin de communiquer avec une API PHP locale.
 
-1. Dans les fichiers de ce projet, trouvez le dossier `server-samples/mylabo_api`.
-2. **Copiez** le dossier `mylabo_api` complet.
+1. Dans les fichiers de ce projet, trouvez le dossier `apps/backend/api`.
+2. **Copiez** le dossier `api` complet.
 3. **Collez-le** dans le répertoire web de Laragon, par défaut : `C:\laragon\www\`.
-*(Vous devriez avoir `C:\laragon\www\mylabo_api\register.php`, etc.)*
+*(Vous devriez avoir `C:\laragon\www\api\register.php`, etc.)*
 4. Lancez **Laragon** et cliquez sur **Start All** (Tout démarrer).
 
 ## 🗄️ Étape 3 : Création de la base de données
@@ -71,7 +71,7 @@ CREATE TABLE `reports` (
 
 Il faut maintenant indiquer à l'application où se trouve l'API.
 
-1. Dans VS Code, ouvrez le fichier `lib/config.dart`.
+1. Dans VS Code, ouvrez le fichier `apps/frontend/lib/config.dart`.
 2. Vérifiez que la variable `apiBaseUrl` pointe bien vers votre serveur local Laragon :
 
 ```Dart
