@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       initialRoute: loggedIn ? "/home" : "/login",
-        routes: {
+      routes: {
         "/login": (context) => const LoginScreen(),
         "/home": (context) => const HomeScreen(),
         "/admin": (context) => const AdminScreen(),
