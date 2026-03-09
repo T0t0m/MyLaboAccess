@@ -331,7 +331,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Text('Envoyer'),
                       ),
                     ],
-                  ),
+      ),
                 );
               } else if (value == 'help') {
                 showDialog(
