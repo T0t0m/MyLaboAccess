@@ -1,5 +1,0 @@
-read -p "Saisir un nom de commit : " COMMIT
-git status
-git add .
-git commit -m "$COMMIT"
-git push origin main
