@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'pages/login_page.dart' as mylogin;
+import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/admin_panel.dart';
 import 'models/user.dart';
 import 'services/api_service.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,8 +21,10 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         primaryColor: Colors.white,
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(fontFamily: 'Roboto', fontSize: 18, color: Colors.black87),
-          bodyMedium: TextStyle(fontFamily: 'Roboto', fontSize: 16, color: Colors.black54),
+          bodyLarge: TextStyle(
+              fontFamily: 'Roboto', fontSize: 18, color: Colors.black87),
+          bodyMedium: TextStyle(
+              fontFamily: 'Roboto', fontSize: 16, color: Colors.black54),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -42,9 +44,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-  '/': (context) => mylogin.LoginPage(),
-        '/home': (context) => MyHomePage(title: 'MyLaboAccess'),
-        '/signup': (context) => SignupPage(),
+        '/': (context) => const LoginPage(),
+        '/home': (context) => const MyHomePage(title: 'MyLaboAccess'),
+        '/signup': (context) => const SignupPage(),
         '/admin': (context) => const AdminPanel(),
       },
     );
@@ -86,9 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
             if (userEmail.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(right: 16.0),
-                child: Text(userEmail, style: TextStyle(fontSize: 16, color: Colors.black54)),
+                child: Text(userEmail,
+                    style: const TextStyle(fontSize: 16, color: Colors.black54)),
               ),
-            Text(widget.title, style: const TextStyle(fontFamily: 'Roboto', fontSize: 22)),
+            Text(widget.title,
+                style: const TextStyle(fontFamily: 'Roboto', fontSize: 22)),
           ],
         ),
         backgroundColor: Theme.of(context).primaryColor,
@@ -97,30 +101,32 @@ class _MyHomePageState extends State<MyHomePage> {
           // Bouton d'accès au panneau admin (visible uniquement pour les admins)
           if (role == UserRole.admin)
             IconButton(
-              icon: Icon(Icons.admin_panel_settings, color: Colors.redAccent.shade700),
+              icon: Icon(Icons.admin_panel_settings,
+                  color: Colors.redAccent.shade700),
               tooltip: 'Panneau Administrateur',
               onPressed: () {
                 Navigator.pushNamed(context, '/admin', arguments: user);
               },
             ),
-              IconButton(
+          IconButton(
             icon: Icon(Icons.report_problem, color: Colors.redAccent.shade700),
             tooltip: 'Signaler dégradation matériel',
             onPressed: () {
               String? selectedEquipment;
-                  int quantity = 1;
+              int quantity = 1;
               TextEditingController descController = TextEditingController();
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Signaler une dégradation'),
+                  title: const Text('Signaler une dégradation'),
                   content: StatefulBuilder(
                     builder: (context, setState) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           DropdownButtonFormField<String>(
-                            decoration: InputDecoration(labelText: 'Matériel dégradé'),
+                            decoration:
+                                const InputDecoration(labelText: 'Matériel dégradé'),
                             initialValue: selectedEquipment,
                             items: [
                               for (var eq in equipments)
@@ -129,19 +135,23 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Text(eq.name),
                                 ),
                             ],
-                            onChanged: (val) => setState(() => selectedEquipment = val),
+                            onChanged: (val) =>
+                                setState(() => selectedEquipment = val),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           TextFormField(
-                            decoration: InputDecoration(labelText: 'Quantité dégradée'),
+                            decoration:
+                                const InputDecoration(labelText: 'Quantité dégradée'),
                             keyboardType: TextInputType.number,
                             initialValue: '1',
-                            onChanged: (val) => setState(() => quantity = int.tryParse(val) ?? 1),
+                            onChanged: (val) => setState(
+                                () => quantity = int.tryParse(val) ?? 1),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           TextFormField(
                             controller: descController,
-                            decoration: InputDecoration(labelText: 'Description / Situation'),
+                            decoration: const InputDecoration(
+                                labelText: 'Description / Situation'),
                             maxLines: 3,
                           ),
                         ],
@@ -151,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text('Fermer'),
+                      child: const Text('Fermer'),
                     ),
                     ElevatedButton(
                       onPressed: () async {
@@ -166,13 +176,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: Text(result['success'] == true ? 'Signalement envoyé' : 'Erreur'),
+                            title: Text(result['success'] == true
+                                ? 'Signalement envoyé'
+                                : 'Erreur'),
                             content: Text(result['message'] ?? ''),
-                            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('OK'))],
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'))
+                            ],
                           ),
                         );
                       },
-                      child: Text('Envoyer'),
+                      child: const Text('Envoyer'),
                     ),
                   ],
                 ),
@@ -180,17 +196,17 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           PopupMenuButton<String>(
-            icon: Icon(Icons.settings, color: Colors.black87),
+            icon: const Icon(Icons.settings, color: Colors.black87),
             itemBuilder: (context) => [
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'delete',
                 child: Text('Supprimer le compte'),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'edit',
                 child: Text('Modifier email/mot de passe'),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: 'help',
                 child: Text('Besoin d\'aide ?'),
               ),
@@ -202,9 +218,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text('Erreur'),
-                      content: Text('Aucun compte valide connecté.'),
-                      actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('OK'))],
+                      title: const Text('Erreur'),
+                      content: const Text('Aucun compte valide connecté.'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('OK'))
+                      ],
                     ),
                   );
                 } else {
@@ -215,21 +235,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     builder: (context) => StatefulBuilder(
                       builder: (context, setState) {
                         return AlertDialog(
-                          title: Text('Supprimer le compte'),
+                          title: const Text('Supprimer le compte'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('Confirmez la suppression en saisissant votre mot de passe.'),
+                              const Text(
+                                  'Confirmez la suppression en saisissant votre mot de passe.'),
                               const SizedBox(height: 8),
                               TextField(
                                 controller: pwdCtrl,
-                                decoration: InputDecoration(labelText: 'Mot de passe'),
+                                decoration:
+                                    const InputDecoration(labelText: 'Mot de passe'),
                                 obscureText: true,
                               ),
                             ],
                           ),
                           actions: [
-                            TextButton(onPressed: () => Navigator.pop(context), child: Text('Annuler')),
+                            TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Annuler')),
                             ElevatedButton(
                               onPressed: isLoading
                                   ? null
@@ -240,15 +264,23 @@ class _MyHomePageState extends State<MyHomePage> {
                                         showDialog(
                                           context: context,
                                           builder: (context) => AlertDialog(
-                                            title: Text('Erreur'),
-                                            content: Text('Veuillez saisir votre mot de passe.'),
-                                            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('OK'))],
+                                            title: const Text('Erreur'),
+                                            content: const Text(
+                                                'Veuillez saisir votre mot de passe.'),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: const Text('OK'))
+                                            ],
                                           ),
                                         );
                                         return;
                                       }
                                       setState(() => isLoading = true);
-                                      final result = await ApiService.deleteAccount(userEmail, pwd);
+                                      final result =
+                                          await ApiService.deleteAccount(
+                                              userEmail, pwd);
                                       setState(() => isLoading = false);
                                       Navigator.pop(context);
                                       if (result['success'] == true) {
@@ -256,15 +288,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                         showDialog(
                                           context: context,
                                           builder: (context) => AlertDialog(
-                                            title: Text('Supprimé'),
-                                            content: Text(result['message'] ?? 'Compte supprimé.'),
+                                            title: const Text('Supprimé'),
+                                            content: Text(result['message'] ??
+                                                'Compte supprimé.'),
                                             actions: [
                                               TextButton(
                                                 onPressed: () {
                                                   Navigator.pop(context);
-                                                  Navigator.pushReplacementNamed(context, '/');
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                          context, '/');
                                                 },
-                                                child: Text('OK'),
+                                                child: const Text('OK'),
                                               ),
                                             ],
                                           ),
@@ -273,14 +308,26 @@ class _MyHomePageState extends State<MyHomePage> {
                                         showDialog(
                                           context: context,
                                           builder: (context) => AlertDialog(
-                                            title: Text('Erreur'),
-                                            content: Text(result['message'] ?? 'Erreur lors de la suppression.'),
-                                            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('OK'))],
+                                            title: const Text('Erreur'),
+                                            content: Text(result['message'] ??
+                                                'Erreur lors de la suppression.'),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: const Text('OK'))
+                                            ],
                                           ),
                                         );
                                       }
                                     },
-                              child: isLoading ? SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : Text('Supprimer'),
+                              child: isLoading
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2))
+                                  : const Text('Supprimer'),
                             ),
                           ],
                         );
@@ -293,22 +340,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text('Réinitialiser email/mot de passe'),
+                    title: const Text('Réinitialiser email/mot de passe'),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         TextField(
                           controller: emailController,
-                          decoration: InputDecoration(labelText: 'Votre email'),
+                          decoration: const InputDecoration(labelText: 'Votre email'),
                         ),
-                        SizedBox(height: 8),
-                        Text('Un lien de réinitialisation sera envoyé à cette adresse.'),
+                        const SizedBox(height: 8),
+                        const Text(
+                            'Un lien de réinitialisation sera envoyé à cette adresse.'),
                       ],
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Fermer'),
+                        child: const Text('Fermer'),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -317,32 +365,33 @@ class _MyHomePageState extends State<MyHomePage> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text('Lien envoyé'),
-                              content: Text('Un lien de réinitialisation a été envoyé à ${emailController.text}.'),
+                              title: const Text('Lien envoyé'),
+                              content: Text(
+                                  'Un lien de réinitialisation a été envoyé à ${emailController.text}.'),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
-                                  child: Text('OK'),
+                                  child: const Text('OK'),
                                 ),
                               ],
                             ),
                           );
                         },
-                        child: Text('Envoyer'),
+                        child: const Text('Envoyer'),
                       ),
                     ],
-      ),
+                  ),
                 );
               } else if (value == 'help') {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text('Besoin d\'aide ?'),
-                    content: Text('Contactez le support ou consultez la FAQ.'),
+                    title: const Text('Besoin d\'aide ?'),
+                    content: const Text('Contactez le support ou consultez la FAQ.'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Fermer'),
+                        child: const Text('Fermer'),
                       ),
                     ],
                   ),
@@ -351,7 +400,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.logout, color: Colors.black87),
+            icon: const Icon(Icons.logout, color: Colors.black87),
             tooltip: 'Déconnexion',
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/');
@@ -372,9 +421,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Emprunter du Matériel'),
-                        content: const Text(
+                      builder: (context) => const AlertDialog(
+                        title: Text('Emprunter du Matériel'),
+                        content: Text(
                             'Vérifiez le nombre de matériels disponibles avant d\'en prendre, puis allez dans l\'onglet "Emprunter du matériel et scannez le QRcode de l\'objet à emprunter".'),
                       ),
                     );
@@ -385,9 +434,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Rendre du Matériel'),
-                        content: const Text(
+                      builder: (context) => const AlertDialog(
+                        title: Text('Rendre du Matériel'),
+                        content: Text(
                             'Sélectionnez le matériel que vous souhaitez rendre dans l\'onglet "Rendre du matériel".'),
                       ),
                     );
@@ -421,7 +470,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       title: Text(
                         eq.name,
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                       trailing: Container(
                         padding: const EdgeInsets.all(8),
@@ -438,7 +488,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       subtitle: role == UserRole.invite
-                          ? Text('Lecture seule', style: TextStyle(color: Colors.grey))
+                          ? const Text('Lecture seule',
+                              style: TextStyle(color: Colors.grey))
                           : null,
                       enabled: role == UserRole.utilisateur,
                       // Ici, tu peux ajouter des actions de modification si role == utilisateur
@@ -459,7 +510,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BorrowEquipmentPage(equipments: equipments),
+                  builder: (context) =>
+                      BorrowEquipmentPage(equipments: equipments),
                 ),
               );
             },
@@ -473,7 +525,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ReturnEquipmentPage(equipments: equipments),
+                  builder: (context) =>
+                      ReturnEquipmentPage(equipments: equipments),
                 ),
               );
             },
@@ -516,7 +569,7 @@ class BorrowEquipmentPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Emprunter du matériel'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Page pour emprunter du matériel.'),
       ),
     );
@@ -534,7 +587,7 @@ class ReturnEquipmentPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Rendre du matériel'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Page pour rendre du matériel.'),
       ),
     );

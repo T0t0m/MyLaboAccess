@@ -10,7 +10,8 @@ import '../config.dart';
 class ApiService {
   /// Essaye plusieurs variantes d'URL (127.0.0.1 / localhost / 10.0.2.2)
   /// afin de réduire les erreurs lors du développement local.
-  static Future<Map<String, dynamic>> _postWithFallback(String path, Map<String, dynamic> payload) async {
+  static Future<Map<String, dynamic>> _postWithFallback(
+      String path, Map<String, dynamic> payload) async {
     final variants = <String>[apiBaseUrl];
     if (apiBaseUrl.contains('127.0.0.1')) {
       variants.add(apiBaseUrl.replaceFirst('127.0.0.1', 'localhost'));
@@ -19,8 +20,10 @@ class ApiService {
       variants.add(apiBaseUrl.replaceFirst('localhost', '127.0.0.1'));
       variants.add(apiBaseUrl.replaceFirst('localhost', '10.0.2.2'));
     } else {
-      variants.add(apiBaseUrl.replaceAll(RegExp(r'https?://'), 'http://127.0.0.1'));
-      variants.add(apiBaseUrl.replaceAll(RegExp(r'https?://'), 'http://localhost'));
+      variants
+          .add(apiBaseUrl.replaceAll(RegExp(r'https?://'), 'http://127.0.0.1'));
+      variants
+          .add(apiBaseUrl.replaceAll(RegExp(r'https?://'), 'http://localhost'));
     }
 
     Exception? lastEx;
@@ -28,7 +31,9 @@ class ApiService {
       final url = Uri.parse('$base$path');
       try {
         final response = await http
-            .post(url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(payload))
+            .post(url,
+                headers: {'Content-Type': 'application/json'},
+                body: jsonEncode(payload))
             .timeout(const Duration(seconds: 8));
         final body = jsonDecode(response.body) as Map<String, dynamic>;
         return body;
@@ -39,12 +44,14 @@ class ApiService {
     }
     return {
       'success': false,
-      'message': 'Impossible de joindre le serveur. Vérifiez Laragon/Apache et l’URL ${apiBaseUrl + path}. Détail: ${lastEx ?? 'erreur inconnue'}'
+      'message':
+          'Impossible de joindre le serveur. Vérifiez Laragon/Apache et l’URL ${apiBaseUrl + path}. Détail: ${lastEx ?? 'erreur inconnue'}'
     };
   }
 
   /// Appel pour l'inscription
-  static Future<Map<String, dynamic>> register(String email, String nom, String role, String password) async {
+  static Future<Map<String, dynamic>> register(
+      String email, String nom, String role, String password) async {
     return await _postWithFallback('/register.php', {
       'email': email,
       'nom': nom,
@@ -54,12 +61,15 @@ class ApiService {
   }
 
   /// Appel pour la connexion (identifiant = email ou nom)
-  static Future<Map<String, dynamic>> login(String identifier, String password) async {
-    return await _postWithFallback('/login.php', {'identifier': identifier, 'password': password});
+  static Future<Map<String, dynamic>> login(
+      String identifier, String password) async {
+    return await _postWithFallback(
+        '/login.php', {'identifier': identifier, 'password': password});
   }
 
   /// Envoie un signalement au backend.
-  static Future<Map<String, dynamic>> sendReport(String userEmail, String equipment, int quantity, String description) async {
+  static Future<Map<String, dynamic>> sendReport(String userEmail,
+      String equipment, int quantity, String description) async {
     return await _postWithFallback('/report.php', {
       'user_email': userEmail,
       'equipment_name': equipment,
@@ -70,7 +80,9 @@ class ApiService {
 
   /// Supprime le compte utilisateur après vérification du mot de passe.
   /// L'identifiant peut être l'email ou le nom (format Niveau_NOM.Prenom).
-  static Future<Map<String, dynamic>> deleteAccount(String identifier, String password) async {
-    return await _postWithFallback('/delete.php', {'identifier': identifier, 'password': password});
+  static Future<Map<String, dynamic>> deleteAccount(
+      String identifier, String password) async {
+    return await _postWithFallback(
+        '/delete.php', {'identifier': identifier, 'password': password});
   }
 }

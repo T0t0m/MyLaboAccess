@@ -9,6 +9,8 @@ import '../models/user.dart';
 /// Cette page gère la connexion et l'inscription (via une boîte de dialogue).
 /// La logique réseau est déléguée à `ApiService` pour garder le widget léger.
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -18,7 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   String errorMessage = '';
 
-  Future<Map<String, dynamic>> register(String email, String nom, String role, String pwd) async {
+  Future<Map<String, dynamic>> register(
+      String email, String nom, String role, String pwd) async {
     return await ApiService.register(email, nom, role, pwd);
   }
 
@@ -40,17 +43,18 @@ class _LoginPageState extends State<LoginPage> {
     if (result['success'] == true) {
       final returnedEmail = result['email'] ?? email;
       setState(() => errorMessage = '');
-      
+
       // Déterminer le rôle : si email contient 'admin', c'est un admin (temporaire pour test)
       UserRole userRole = UserRole.utilisateur;
       if (email.toLowerCase().contains('admin') || password == 'admin123') {
         userRole = UserRole.admin;
       }
-      
+
       final user = User(email: returnedEmail, role: userRole);
       Navigator.pushReplacementNamed(context, '/home', arguments: user);
     } else {
-      setState(() => errorMessage = result['message'] ?? 'Erreur de connexion.');
+      setState(
+          () => errorMessage = result['message'] ?? 'Erreur de connexion.');
     }
   }
 
@@ -85,13 +89,15 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 8),
                     TextField(
                       controller: pwdCtrl,
-                      decoration: const InputDecoration(labelText: 'Mot de passe'),
+                      decoration:
+                          const InputDecoration(labelText: 'Mot de passe'),
                       obscureText: true,
                     ),
                     if (localError.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(localError, style: const TextStyle(color: Colors.red)),
+                        child: Text(localError,
+                            style: const TextStyle(color: Colors.red)),
                       ),
                   ],
                 ),
@@ -113,10 +119,12 @@ class _LoginPageState extends State<LoginPage> {
                       return;
                     }
                     // Validation simple du format attendu : Niveau_NOM.Prenom
-                    final pattern = RegExp(r'^[A-Za-z0-9]+_[A-Za-z]+\.[A-Za-z]+$');
+                    final pattern =
+                        RegExp(r'^[A-Za-z0-9]+_[A-Za-z]+\.[A-Za-z]+$');
                     if (!pattern.hasMatch(nom)) {
                       setState(() {
-                        localError = 'Le nom doit être au format "Niveau_NOM.Prenom" (ex: B2ipi_DIOURI.Reda).';
+                        localError =
+                            'Le nom doit être au format "Niveau_NOM.Prenom" (ex: B2ipi_DIOURI.Reda).';
                       });
                       return;
                     }
@@ -137,16 +145,21 @@ class _LoginPageState extends State<LoginPage> {
                     final lastUpper = rawLast.toUpperCase();
                     final firstCap = rawFirst.isEmpty
                         ? rawFirst
-                        : (rawFirst[0].toUpperCase() + rawFirst.substring(1).toLowerCase());
-                    final normalizedNom = '$level\_${lastUpper}.$firstCap';
+                        : (rawFirst[0].toUpperCase() +
+                            rawFirst.substring(1).toLowerCase());
+                    final normalizedNom = '${level}_$lastUpper.$firstCap';
                     setState(() => localError = '');
-                    final result = await register(email, normalizedNom, 'utilisateur', pwd);
+                    final result = await register(
+                        email, normalizedNom, 'utilisateur', pwd);
                     if (result['success'] == true) {
                       Navigator.pop(context);
-                      Navigator.pushReplacementNamed(context, '/home', arguments: User(email: email, role: UserRole.utilisateur));
+                      Navigator.pushReplacementNamed(context, '/home',
+                          arguments:
+                              User(email: email, role: UserRole.utilisateur));
                     } else {
                       setState(() {
-                        localError = result['message'] ?? "Erreur lors de l'inscription.";
+                        localError = result['message'] ??
+                            "Erreur lors de l'inscription.";
                       });
                     }
                   },
@@ -195,9 +208,11 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.lock_outline, size: 48, color: Colors.redAccent.shade700),
+              Icon(Icons.lock_outline,
+                  size: 48, color: Colors.redAccent.shade700),
               const SizedBox(height: 16),
-              const Text('Bienvenue', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              const Text('Bienvenue',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               const SizedBox(height: 24),
               TextField(
                 controller: emailController,
@@ -238,11 +253,11 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _guest,
-                child: const Text("Accéder en tant qu'invité"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey[300],
                   foregroundColor: Colors.black,
                 ),
+                child: const Text("Accéder en tant qu'invité"),
               ),
               if (errorMessage.isNotEmpty)
                 Padding(

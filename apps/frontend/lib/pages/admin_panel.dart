@@ -16,32 +16,139 @@ class AdminPanel extends StatefulWidget {
   State<AdminPanel> createState() => _AdminPanelState();
 }
 
-class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateMixin {
+class _AdminPanelState extends State<AdminPanel>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
 
   // Données mockées pour le frontend (seront remplacées par des appels API)
   final List<Map<String, dynamic>> _users = [
-    {'id': 1, 'nom': 'B2ipi_ADMIN.System', 'email': 'admin@mylabo.com', 'role': 'admin', 'actif': true, 'dateInscription': '2025-01-15'},
-    {'id': 2, 'nom': 'B2ipi_DIOURI.Reda', 'email': 'reda@example.com', 'role': 'utilisateur', 'actif': true, 'dateInscription': '2025-02-20'},
-    {'id': 3, 'nom': 'B2ipi_MARTIN.Sophie', 'email': 'sophie@example.com', 'role': 'utilisateur', 'actif': true, 'dateInscription': '2025-03-10'},
-    {'id': 4, 'nom': 'B2ipi_BERNARD.Luc', 'email': 'luc@example.com', 'role': 'utilisateur', 'actif': false, 'dateInscription': '2025-01-25'},
+    {
+      'id': 1,
+      'nom': 'B2ipi_ADMIN.System',
+      'email': 'admin@mylabo.com',
+      'role': 'admin',
+      'actif': true,
+      'dateInscription': '2025-01-15'
+    },
+    {
+      'id': 2,
+      'nom': 'B2ipi_DIOURI.Reda',
+      'email': 'reda@example.com',
+      'role': 'utilisateur',
+      'actif': true,
+      'dateInscription': '2025-02-20'
+    },
+    {
+      'id': 3,
+      'nom': 'B2ipi_MARTIN.Sophie',
+      'email': 'sophie@example.com',
+      'role': 'utilisateur',
+      'actif': true,
+      'dateInscription': '2025-03-10'
+    },
+    {
+      'id': 4,
+      'nom': 'B2ipi_BERNARD.Luc',
+      'email': 'luc@example.com',
+      'role': 'utilisateur',
+      'actif': false,
+      'dateInscription': '2025-01-25'
+    },
   ];
 
   final List<Map<String, dynamic>> _equipment = [
-    {'id': 1, 'nom': 'Écrans', 'quantiteTotal': 15, 'quantiteDispo': 8, 'quantiteEmprunte': 7, 'etat': 'Bon'},
-    {'id': 2, 'nom': 'Routeurs', 'quantiteTotal': 8, 'quantiteDispo': 5, 'quantiteEmprunte': 3, 'etat': 'Bon'},
-    {'id': 3, 'nom': 'Switches', 'quantiteTotal': 12, 'quantiteDispo': 9, 'quantiteEmprunte': 3, 'etat': 'Moyen'},
-    {'id': 4, 'nom': 'Serveurs', 'quantiteTotal': 4, 'quantiteDispo': 2, 'quantiteEmprunte': 2, 'etat': 'Bon'},
-    {'id': 5, 'nom': 'Câbles réseau', 'quantiteTotal': 150, 'quantiteDispo': 120, 'quantiteEmprunte': 30, 'etat': 'Bon'},
-    {'id': 6, 'nom': 'Points d\'accès WiFi', 'quantiteTotal': 6, 'quantiteDispo': 4, 'quantiteEmprunte': 2, 'etat': 'Bon'},
+    {
+      'id': 1,
+      'nom': 'Écrans',
+      'quantiteTotal': 15,
+      'quantiteDispo': 8,
+      'quantiteEmprunte': 7,
+      'etat': 'Bon'
+    },
+    {
+      'id': 2,
+      'nom': 'Routeurs',
+      'quantiteTotal': 8,
+      'quantiteDispo': 5,
+      'quantiteEmprunte': 3,
+      'etat': 'Bon'
+    },
+    {
+      'id': 3,
+      'nom': 'Switches',
+      'quantiteTotal': 12,
+      'quantiteDispo': 9,
+      'quantiteEmprunte': 3,
+      'etat': 'Moyen'
+    },
+    {
+      'id': 4,
+      'nom': 'Serveurs',
+      'quantiteTotal': 4,
+      'quantiteDispo': 2,
+      'quantiteEmprunte': 2,
+      'etat': 'Bon'
+    },
+    {
+      'id': 5,
+      'nom': 'Câbles réseau',
+      'quantiteTotal': 150,
+      'quantiteDispo': 120,
+      'quantiteEmprunte': 30,
+      'etat': 'Bon'
+    },
+    {
+      'id': 6,
+      'nom': 'Points d\'accès WiFi',
+      'quantiteTotal': 6,
+      'quantiteDispo': 4,
+      'quantiteEmprunte': 2,
+      'etat': 'Bon'
+    },
   ];
 
   final List<Map<String, dynamic>> _reports = [
-    {'id': 1, 'utilisateur': 'reda@example.com', 'materiel': 'Écrans', 'quantite': 2, 'description': 'Écran cassé coin inférieur droit', 'date': '2025-11-20', 'statut': 'En attente', 'priorite': 'Haute'},
-    {'id': 2, 'utilisateur': 'sophie@example.com', 'materiel': 'Switches', 'quantite': 1, 'description': 'Port Ethernet ne fonctionne plus', 'date': '2025-11-22', 'statut': 'En cours', 'priorite': 'Moyenne'},
-    {'id': 3, 'utilisateur': 'luc@example.com', 'materiel': 'Routeurs', 'quantite': 1, 'description': 'LED ne s\'allume plus', 'date': '2025-11-18', 'statut': 'Résolu', 'priorite': 'Basse'},
-    {'id': 4, 'utilisateur': 'reda@example.com', 'materiel': 'Câbles réseau', 'quantite': 5, 'description': 'Câbles abîmés, connecteurs cassés', 'date': '2025-11-23', 'statut': 'En attente', 'priorite': 'Haute'},
+    {
+      'id': 1,
+      'utilisateur': 'reda@example.com',
+      'materiel': 'Écrans',
+      'quantite': 2,
+      'description': 'Écran cassé coin inférieur droit',
+      'date': '2025-11-20',
+      'statut': 'En attente',
+      'priorite': 'Haute'
+    },
+    {
+      'id': 2,
+      'utilisateur': 'sophie@example.com',
+      'materiel': 'Switches',
+      'quantite': 1,
+      'description': 'Port Ethernet ne fonctionne plus',
+      'date': '2025-11-22',
+      'statut': 'En cours',
+      'priorite': 'Moyenne'
+    },
+    {
+      'id': 3,
+      'utilisateur': 'luc@example.com',
+      'materiel': 'Routeurs',
+      'quantite': 1,
+      'description': 'LED ne s\'allume plus',
+      'date': '2025-11-18',
+      'statut': 'Résolu',
+      'priorite': 'Basse'
+    },
+    {
+      'id': 4,
+      'utilisateur': 'reda@example.com',
+      'materiel': 'Câbles réseau',
+      'quantite': 5,
+      'description': 'Câbles abîmés, connecteurs cassés',
+      'date': '2025-11-23',
+      'statut': 'En attente',
+      'priorite': 'Haute'
+    },
   ];
 
   @override
@@ -101,11 +208,13 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           children: [
             Icon(Icons.admin_panel_settings, color: Colors.white),
-            const SizedBox(width: 12),
-            const Text('Panneau Administrateur', style: TextStyle(fontFamily: 'Roboto', fontSize: 22, color: Colors.white)),
+            SizedBox(width: 12),
+            Text('Panneau Administrateur',
+                style: TextStyle(
+                    fontFamily: 'Roboto', fontSize: 22, color: Colors.white)),
           ],
         ),
         backgroundColor: Colors.redAccent.shade700,
@@ -119,7 +228,9 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 // Rafraîchir les données (appel API futur)
               });
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Données actualisées'), duration: Duration(seconds: 2)),
+                const SnackBar(
+                    content: Text('Données actualisées'),
+                    duration: Duration(seconds: 2)),
               );
             },
           ),
@@ -162,10 +273,15 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     // Calculs de statistiques
     final totalUsers = _users.length;
     final activeUsers = _users.where((u) => u['actif'] == true).length;
-    final totalEquipment = _equipment.fold<int>(0, (sum, eq) => sum + (eq['quantiteTotal'] as int));
-    final borrowedEquipment = _equipment.fold<int>(0, (sum, eq) => sum + (eq['quantiteEmprunte'] as int));
-    final pendingReports = _reports.where((r) => r['statut'] == 'En attente').length;
-    final highPriorityReports = _reports.where((r) => r['priorite'] == 'Haute' && r['statut'] != 'Résolu').length;
+    final totalEquipment = _equipment.fold<int>(
+        0, (sum, eq) => sum + (eq['quantiteTotal'] as int));
+    final borrowedEquipment = _equipment.fold<int>(
+        0, (sum, eq) => sum + (eq['quantiteEmprunte'] as int));
+    final pendingReports =
+        _reports.where((r) => r['statut'] == 'En attente').length;
+    final highPriorityReports = _reports
+        .where((r) => r['priorite'] == 'Haute' && r['statut'] != 'Résolu')
+        .length;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -186,10 +302,17 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
             mainAxisSpacing: 16,
             childAspectRatio: 1.5,
             children: [
-              _buildStatCard('Utilisateurs actifs', '$activeUsers / $totalUsers', Icons.people, Colors.blue),
-              _buildStatCard('Matériel emprunté', '$borrowedEquipment / $totalEquipment', Icons.shopping_cart, Colors.orange),
-              _buildStatCard('Signalements en attente', '$pendingReports', Icons.warning_amber, Colors.red),
-              _buildStatCard('Priorité haute', '$highPriorityReports', Icons.priority_high, Colors.purple),
+              _buildStatCard('Utilisateurs actifs',
+                  '$activeUsers / $totalUsers', Icons.people, Colors.blue),
+              _buildStatCard(
+                  'Matériel emprunté',
+                  '$borrowedEquipment / $totalEquipment',
+                  Icons.shopping_cart,
+                  Colors.orange),
+              _buildStatCard('Signalements en attente', '$pendingReports',
+                  Icons.warning_amber, Colors.red),
+              _buildStatCard('Priorité haute', '$highPriorityReports',
+                  Icons.priority_high, Colors.purple),
             ],
           ),
           const SizedBox(height: 32),
@@ -201,40 +324,51 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 flex: 2,
                 child: Card(
                   elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Matériel le plus emprunté', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const Text('Matériel le plus emprunté',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
                         ..._equipment.map((eq) {
                           final borrowed = eq['quantiteEmprunte'] as int;
                           final total = eq['quantiteTotal'] as int;
-                          final percent = (borrowed / total * 100).toStringAsFixed(0);
+                          final percent =
+                              (borrowed / total * 100).toStringAsFixed(0);
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(eq['nom'], style: const TextStyle(fontWeight: FontWeight.w500)),
-                                    Text('$borrowed / $total ($percent%)', style: const TextStyle(color: Colors.grey)),
+                                    Text(eq['nom'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500)),
+                                    Text('$borrowed / $total ($percent%)',
+                                        style: const TextStyle(
+                                            color: Colors.grey)),
                                   ],
                                 ),
                                 const SizedBox(height: 4),
                                 LinearProgressIndicator(
                                   value: borrowed / total,
                                   backgroundColor: Colors.grey[300],
-                                  color: borrowed / total > 0.7 ? Colors.red : Colors.green,
+                                  color: borrowed / total > 0.7
+                                      ? Colors.red
+                                      : Colors.green,
                                 ),
                               ],
                             ),
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),
@@ -245,18 +379,28 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 flex: 1,
                 child: Card(
                   elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Activités récentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const Text('Activités récentes',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
-                        _buildActivityItem(Icons.person_add, 'Nouvel utilisateur', 'B2ipi_MARTIN.Sophie', '10/03/2025'),
-                        _buildActivityItem(Icons.report_problem, 'Signalement', 'Câbles abîmés', '23/11/2025'),
-                        _buildActivityItem(Icons.check_circle, 'Signalement résolu', 'Routeur LED', '18/11/2025'),
-                        _buildActivityItem(Icons.add_box, 'Matériel ajouté', '+10 Câbles réseau', '15/11/2025'),
+                        _buildActivityItem(
+                            Icons.person_add,
+                            'Nouvel utilisateur',
+                            'B2ipi_MARTIN.Sophie',
+                            '10/03/2025'),
+                        _buildActivityItem(Icons.report_problem, 'Signalement',
+                            'Câbles abîmés', '23/11/2025'),
+                        _buildActivityItem(Icons.check_circle,
+                            'Signalement résolu', 'Routeur LED', '18/11/2025'),
+                        _buildActivityItem(Icons.add_box, 'Matériel ajouté',
+                            '+10 Câbles réseau', '15/11/2025'),
                       ],
                     ),
                   ),
@@ -269,7 +413,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -282,7 +427,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
             const SizedBox(height: 8),
             Text(
               value,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: color),
+              style: TextStyle(
+                  fontSize: 24, fontWeight: FontWeight.bold, color: color),
             ),
             const SizedBox(height: 4),
             Text(
@@ -296,7 +442,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildActivityItem(IconData icon, String title, String subtitle, String date) {
+  Widget _buildActivityItem(
+      IconData icon, String title, String subtitle, String date) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -310,8 +457,10 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-                Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                Text(title,
+                    style: const TextStyle(fontWeight: FontWeight.w500)),
+                Text(subtitle,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey)),
               ],
             ),
           ),
@@ -334,7 +483,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                   decoration: InputDecoration(
                     hintText: 'Rechercher un utilisateur...',
                     prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
                   ),
                   onChanged: (value) {
                     // Filtrer les utilisateurs (à implémenter)
@@ -347,7 +497,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 icon: const Icon(Icons.person_add),
                 label: const Text('Ajouter utilisateur'),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
               ),
             ],
@@ -360,13 +511,27 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
               child: DataTable(
                 headingRowColor: WidgetStateProperty.all(Colors.grey[200]),
                 columns: const [
-                  DataColumn(label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Nom', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Email', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Rôle', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Statut', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Inscription', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('ID',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Nom',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Email',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Rôle',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Statut',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Inscription',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Actions',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
                 ],
                 rows: _users.map((user) {
                   return DataRow(
@@ -385,7 +550,13 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                             onPressed: () => _showEditUserDialog(user),
                           ),
                           IconButton(
-                            icon: Icon(user['actif'] ? Icons.block : Icons.check_circle, color: user['actif'] ? Colors.orange : Colors.green),
+                            icon: Icon(
+                                user['actif']
+                                    ? Icons.block
+                                    : Icons.check_circle,
+                                color: user['actif']
+                                    ? Colors.orange
+                                    : Colors.green),
                             tooltip: user['actif'] ? 'Désactiver' : 'Activer',
                             onPressed: () => _toggleUserStatus(user),
                           ),
@@ -422,11 +593,13 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),
-      child: Text(role, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12)),
+      child: Text(role,
+          style: TextStyle(
+              color: color, fontWeight: FontWeight.bold, fontSize: 12)),
     );
   }
 
@@ -434,13 +607,17 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: actif ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
+        color:
+            actif ? Colors.green.withValues(alpha: 0.2) : Colors.red.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: actif ? Colors.green : Colors.red),
       ),
       child: Text(
         actif ? 'Actif' : 'Inactif',
-        style: TextStyle(color: actif ? Colors.green : Colors.red, fontWeight: FontWeight.bold, fontSize: 12),
+        style: TextStyle(
+            color: actif ? Colors.green : Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 12),
       ),
     );
   }
@@ -487,14 +664,16 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: selectedRole,
+                  initialValue: selectedRole,
                   decoration: const InputDecoration(
                     labelText: 'Rôle',
                     border: OutlineInputBorder(),
                   ),
                   items: const [
-                    DropdownMenuItem(value: 'utilisateur', child: Text('Utilisateur')),
-                    DropdownMenuItem(value: 'admin', child: Text('Administrateur')),
+                    DropdownMenuItem(
+                        value: 'utilisateur', child: Text('Utilisateur')),
+                    DropdownMenuItem(
+                        value: 'admin', child: Text('Administrateur')),
                     DropdownMenuItem(value: 'invite', child: Text('Invité')),
                   ],
                   onChanged: (value) => setState(() => selectedRole = value!),
@@ -512,7 +691,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 // TODO: Appel API pour ajouter l'utilisateur
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Utilisateur ajouté avec succès')),
+                  const SnackBar(
+                      content: Text('Utilisateur ajouté avec succès')),
                 );
               },
               child: const Text('Ajouter'),
@@ -554,14 +734,16 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: selectedRole,
+                  initialValue: selectedRole,
                   decoration: const InputDecoration(
                     labelText: 'Rôle',
                     border: OutlineInputBorder(),
                   ),
                   items: const [
-                    DropdownMenuItem(value: 'utilisateur', child: Text('Utilisateur')),
-                    DropdownMenuItem(value: 'admin', child: Text('Administrateur')),
+                    DropdownMenuItem(
+                        value: 'utilisateur', child: Text('Utilisateur')),
+                    DropdownMenuItem(
+                        value: 'admin', child: Text('Administrateur')),
                     DropdownMenuItem(value: 'invite', child: Text('Invité')),
                   ],
                   onChanged: (value) => setState(() => selectedRole = value!),
@@ -579,7 +761,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 // TODO: Appel API pour modifier l'utilisateur
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Utilisateur modifié avec succès')),
+                  const SnackBar(
+                      content: Text('Utilisateur modifié avec succès')),
                 );
               },
               child: const Text('Enregistrer'),
@@ -595,7 +778,9 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
       user['actif'] = !user['actif'];
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Utilisateur ${user['actif'] ? 'activé' : 'désactivé'}')),
+      SnackBar(
+          content:
+              Text('Utilisateur ${user['actif'] ? 'activé' : 'désactivé'}')),
     );
   }
 
@@ -604,7 +789,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirmer la suppression'),
-        content: Text('Voulez-vous vraiment supprimer l\'utilisateur ${user['nom']} ?'),
+        content: Text(
+            'Voulez-vous vraiment supprimer l\'utilisateur ${user['nom']} ?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -641,7 +827,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                   decoration: InputDecoration(
                     hintText: 'Rechercher du matériel...',
                     prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
               ),
@@ -651,7 +838,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 icon: const Icon(Icons.add_box),
                 label: const Text('Ajouter matériel'),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
               ),
             ],
@@ -664,13 +852,27 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
               child: DataTable(
                 headingRowColor: WidgetStateProperty.all(Colors.grey[200]),
                 columns: const [
-                  DataColumn(label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Nom', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Total', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Disponible', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Emprunté', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('État', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('ID',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Nom',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Total',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Disponible',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Emprunté',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('État',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Actions',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
                 ],
                 rows: _equipment.map((eq) {
                   return DataRow(
@@ -678,8 +880,14 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                       DataCell(Text('${eq['id']}')),
                       DataCell(Text(eq['nom'])),
                       DataCell(Text('${eq['quantiteTotal']}')),
-                      DataCell(Text('${eq['quantiteDispo']}', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold))),
-                      DataCell(Text('${eq['quantiteEmprunte']}', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold))),
+                      DataCell(Text('${eq['quantiteDispo']}',
+                          style: const TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold))),
+                      DataCell(Text('${eq['quantiteEmprunte']}',
+                          style: const TextStyle(
+                              color: Colors.orange,
+                              fontWeight: FontWeight.bold))),
                       DataCell(_buildEquipmentStateBadge(eq['etat'])),
                       DataCell(Row(
                         children: [
@@ -689,12 +897,14 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                             onPressed: () => _showEditEquipmentDialog(eq),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add_circle, color: Colors.green),
+                            icon: const Icon(Icons.add_circle,
+                                color: Colors.green),
                             tooltip: 'Ajouter stock',
                             onPressed: () => _showAdjustStockDialog(eq, true),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.remove_circle, color: Colors.orange),
+                            icon: const Icon(Icons.remove_circle,
+                                color: Colors.orange),
                             tooltip: 'Retirer stock',
                             onPressed: () => _showAdjustStockDialog(eq, false),
                           ),
@@ -734,11 +944,13 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),
-      child: Text(etat, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12)),
+      child: Text(etat,
+          style: TextStyle(
+              color: color, fontWeight: FontWeight.bold, fontSize: 12)),
     );
   }
 
@@ -774,7 +986,7 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: selectedEtat,
+                  initialValue: selectedEtat,
                   decoration: const InputDecoration(
                     labelText: 'État',
                     border: OutlineInputBorder(),
@@ -832,7 +1044,7 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: selectedEtat,
+                  initialValue: selectedEtat,
                   decoration: const InputDecoration(
                     labelText: 'État',
                     border: OutlineInputBorder(),
@@ -909,7 +1121,9 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
               });
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Stock ${isAdding ? 'ajouté' : 'retiré'} avec succès')),
+                SnackBar(
+                    content: Text(
+                        'Stock ${isAdding ? 'ajouté' : 'retiré'} avec succès')),
               );
             },
             child: Text(isAdding ? 'Ajouter' : 'Retirer'),
@@ -961,7 +1175,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                   decoration: InputDecoration(
                     hintText: 'Rechercher un signalement...',
                     prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
               ),
@@ -973,7 +1188,7 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                   ButtonSegment(value: 'En cours', label: Text('En cours')),
                   ButtonSegment(value: 'Résolu', label: Text('Résolus')),
                 ],
-                selected: {'Tous'},
+                selected: const {'Tous'},
                 onSelectionChanged: (Set<String> selection) {
                   // Filtrer les signalements
                 },
@@ -988,15 +1203,33 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
               child: DataTable(
                 headingRowColor: WidgetStateProperty.all(Colors.grey[200]),
                 columns: const [
-                  DataColumn(label: Text('ID', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Utilisateur', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Matériel', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Quantité', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Description', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Date', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Priorité', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Statut', style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('ID',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Utilisateur',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Matériel',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Quantité',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Description',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Date',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Priorité',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Statut',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  DataColumn(
+                      label: Text('Actions',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
                 ],
                 rows: _reports.map((report) {
                   return DataRow(
@@ -1021,7 +1254,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                       DataCell(Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.visibility, color: Colors.blue),
+                            icon: const Icon(Icons.visibility,
+                                color: Colors.blue),
                             tooltip: 'Voir détails',
                             onPressed: () => _showReportDetails(report),
                           ),
@@ -1066,11 +1300,13 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),
-      child: Text(priorite, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12)),
+      child: Text(priorite,
+          style: TextStyle(
+              color: color, fontWeight: FontWeight.bold, fontSize: 12)),
     );
   }
 
@@ -1092,11 +1328,13 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),
-      child: Text(statut, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12)),
+      child: Text(statut,
+          style: TextStyle(
+              color: color, fontWeight: FontWeight.bold, fontSize: 12)),
     );
   }
 
@@ -1117,7 +1355,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
               _buildDetailRow('Priorité', report['priorite']),
               _buildDetailRow('Statut', report['statut']),
               const SizedBox(height: 12),
-              const Text('Description:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Description:',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
               Text(report['description']),
             ],
@@ -1167,7 +1406,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirmer la suppression'),
-        content: Text('Voulez-vous vraiment supprimer le signalement #${report['id']} ?'),
+        content: Text(
+            'Voulez-vous vraiment supprimer le signalement #${report['id']} ?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -1208,7 +1448,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
             Icons.notifications,
             [
               _buildSettingsSwitch('Activer les notifications par email', true),
-              _buildSettingsSwitch('Notifications pour nouveaux signalements', true),
+              _buildSettingsSwitch(
+                  'Notifications pour nouveaux signalements', true),
               _buildSettingsSwitch('Notifications pour stock faible', true),
             ],
           ),
@@ -1279,7 +1520,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
                   onPressed: () {
                     // Confirmation dialog
                   },
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.orange),
                   child: const Text('Réinitialiser'),
                 ),
               ),
@@ -1292,11 +1534,13 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
             [
               const ListTile(
                 title: Text('Version de l\'application'),
-                trailing: Text('1.0.0', style: TextStyle(fontWeight: FontWeight.bold)),
+                trailing: Text('1.0.0',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               const ListTile(
                 title: Text('Développé par'),
-                trailing: Text('Équipe B2 IPI', style: TextStyle(fontWeight: FontWeight.bold)),
+                trailing: Text('Équipe B2 IPI',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               ListTile(
                 title: const Text('Voir les logs système'),
@@ -1312,7 +1556,8 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildSettingsCard(String title, IconData icon, List<Widget> children) {
+  Widget _buildSettingsCard(
+      String title, IconData icon, List<Widget> children) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -1325,7 +1570,9 @@ class _AdminPanelState extends State<AdminPanel> with SingleTickerProviderStateM
               children: [
                 Icon(icon, color: Colors.redAccent.shade700),
                 const SizedBox(width: 12),
-                Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text(title,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold)),
               ],
             ),
             const Divider(height: 24),

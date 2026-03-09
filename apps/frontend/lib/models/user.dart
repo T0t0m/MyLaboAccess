@@ -2,6 +2,7 @@
 ///
 /// Ce fichier contient la classe `User` et l'enum `UserRole`.
 /// Il est placé dans `lib/models/` pour clarifier l'architecture.
+library;
 
 enum UserRole { invite, utilisateur, admin }
 

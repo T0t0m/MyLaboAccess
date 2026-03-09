@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 
 /// Page d'inscription (séparée pour la clarté du projet)
 class SignupPage extends StatelessWidget {
+  const SignupPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Inscription"), backgroundColor: Colors.redAccent.shade700),
+      appBar: AppBar(
+          title: const Text("Inscription"),
+          backgroundColor: Colors.redAccent.shade700),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(24.0),
-          constraints: BoxConstraints(maxWidth: 400),
+          constraints: const BoxConstraints(maxWidth: 400),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.black12,
                 blurRadius: 12,
@@ -24,19 +28,21 @@ class SignupPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.person_add, size: 48, color: Colors.redAccent.shade700),
-              SizedBox(height: 16),
-              Text('Créer un compte', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-              SizedBox(height: 24),
-              TextField(
+              Icon(Icons.person_add,
+                  size: 48, color: Colors.redAccent.shade700),
+              const SizedBox(height: 16),
+              const Text('Créer un compte',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 24),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.email_outlined),
                 ),
               ),
-              SizedBox(height: 16),
-              TextField(
+              const SizedBox(height: 16),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Mot de passe',
                   border: OutlineInputBorder(),
@@ -44,12 +50,12 @@ class SignupPage extends StatelessWidget {
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('S\'inscrire'),
+                child: const Text('S\'inscrire'),
               ),
             ],
           ),
