@@ -1,7 +1,5 @@
 <?php
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type');
+ require_once '../database/db.php'
 
 $input = json_decode(file_get_contents('php://input'), true);
 if (!$input) {
@@ -49,5 +47,6 @@ try {
 
   echo json_encode(['success' => true, 'message' => 'Compte supprimé']);
 } catch (Exception $e) {
-  echo json_encode(['success' => false, 'message' => 'Erreur serveur: ' . $e->getMessage()]);
+  echo json_encode(['success' => false, 'message' => 'Erreur serveur: ' . //$e->getMessage()
+  ]);
 }
