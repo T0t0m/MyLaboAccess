@@ -6,11 +6,11 @@ Ce document décrit la marche à suivre pour soumettre vos modifications de code
 
 Avant d'ouvrir une Pull Request, assurez-vous d'avoir :
 
-Créé une branche de travail spécifique pour vos modifications.
+1. Créé une branche de travail spécifique pour vos modifications.
 
-Commité et poussé (`push`) vos modifications sur le dépôt distant.
+2. Commité et poussé (`push`) vos modifications sur le dépôt distant.
 
-Vérifié que votre code compile et que vos tests locaux passent.
+3. Vérifié que votre code compile et que vos tests locaux passent.
 
 ## 🚀 Étape 1 : Création de la Pull Request
 
