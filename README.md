@@ -96,3 +96,7 @@ flutter run -d chrome
 Une fenêtre Google Chrome va s'ouvrir avec l'application.
 
 **Test rapide** : Essayez de créer un compte via l'interface d'inscription de l'application. Si le compte se crée, la liaison entre Flutter, PHP et MySQL fonctionne parfaitement ! 🎉
+
+## 🔄 Étape 6 : Processus de développement (Pull Requests)
+
+Avant de commencer à développer vos tickets, merci de lire attentivement notre [Procédure de Pull Request](docs/PullRequest_Process.md). Ce document explique la marche à suivre pour soumettre votre code et le faire valider par le relecteur.
