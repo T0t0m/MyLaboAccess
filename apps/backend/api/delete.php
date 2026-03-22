@@ -3,6 +3,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
 
+require_once '../database/db.php';
+
 $input = json_decode(file_get_contents('php://input'), true);
 if (!$input) {
   echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
@@ -18,16 +20,6 @@ if (empty($identifier) || empty($password)) {
 }
 
 try {
-  $dbHost = '127.0.0.1';
-  $dbName = 'mylaboipi';
-  $dbUser = 'root';
-  $dbPass = '';
-
-  $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-  ]);
-
   // Find user
   $stmt = $pdo->prepare('SELECT id, email, nom, password_hash FROM users WHERE email = ? OR nom = ? LIMIT 1');
   $stmt->execute([$identifier, $identifier]);
@@ -49,5 +41,8 @@ try {
 
   echo json_encode(['success' => true, 'message' => 'Compte supprimé']);
 } catch (Exception $e) {
-  echo json_encode(['success' => false, 'message' => 'Erreur serveur: ' . $e->getMessage()]);
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erreur serveur: '  //. $e->getMessage()
+  ]);
 }
