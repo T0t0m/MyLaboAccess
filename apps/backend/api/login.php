@@ -18,17 +18,15 @@ if (empty($identifier) || empty($password)) {
 }
 
 try {
-  $dbHost = '127.0.0.1';
-  $dbName = 'mylaboipi';
-  $dbUser = 'root';
-  $dbPass = '';
+     $stmt = $pdo->prepare
+     ('SELECT id, email, nom, password_hash, role 
+     FROM users 
+     WHERE email = ? OR nom = ? 
+     LIMIT 1'
+ 
+  );
 
-  $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-  ]);
-
-  $stmt = $pdo->prepare('SELECT id, email, nom, password_hash, role FROM users WHERE email = ? OR nom = ? LIMIT 1');
+ 
   $stmt->execute([$identifier, $identifier]);
   $user = $stmt->fetch();
 
