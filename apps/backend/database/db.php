@@ -1,14 +1,14 @@
 <?php
+$host = '127.0.0.1';
+$db   = 'mylaboipi';
+$user = 'root';
+$pass = '';
+$dsn = 'mysql:host=localhost;dbname=projettutore2;charset=utf8';
 // Définition du DSN (Data Source Name) pour la connexion à MySQL
 // - host : serveur de base de données
 // - dbname : nom de la base de données
 // - charset : encodage UTF-8
 $dsn = 'mysql:host=localhost;dbname=projettutore2;charset=utf8';
-
-// Identifiants de connexion à la base de données
-$user = "root";
-$pass = "";
-
 try {
     // Création de l'objet PDO pour établir la connexion
     $pdo = new PDO($dsn, $user, $pass);
