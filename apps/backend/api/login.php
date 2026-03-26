@@ -1,4 +1,6 @@
 <?php
+require_once '../database/db.php';
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
@@ -18,15 +20,13 @@ if (empty($identifier) || empty($password)) {
 }
 
 try {
-     $stmt = $pdo->prepare
-     ('SELECT id, email, nom, password_hash, role 
-     FROM users 
-     WHERE email = ? OR nom = ? 
-     LIMIT 1'
- 
+  $stmt = $pdo->prepare(
+    'SELECT id, email, nom, password_hash, role 
+    FROM users 
+    WHERE email = ? OR nom = ? 
+    LIMIT 1'
   );
 
- 
   $stmt->execute([$identifier, $identifier]);
   $user = $stmt->fetch();
 
