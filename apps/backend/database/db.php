@@ -1,20 +1,15 @@
 <?php
-// Définition du DSN (Data Source Name) pour la connexion à MySQL
-// - host : serveur de base de données
-// - dbname : nom de la base de données
-// - charset : encodage UTF-8
-$dsn = 'mysql:host=localhost;dbname=projettutore2;charset=utf8';
-
-// Identifiants de connexion à la base de données
-$user = "root";
-$pass = "";
+$dbHost = '127.0.0.1';
+$dbName = 'mylaboipi';
+$dbUser = 'root';
+$dbPass = '';
 
 try {
     // Création de l'objet PDO pour établir la connexion
-    $pdo = new PDO($dsn, $user, $pass);
-
-    // Activation du mode exception pour gérer les erreurs SQL
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
 
     // Forcer l'encodage UTF-8 pour les échanges avec la base
     $pdo->exec("SET CHARACTER SET utf8");
