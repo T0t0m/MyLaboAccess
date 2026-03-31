@@ -1,8 +1,8 @@
 <?php
-$dbHost = '127.0.0.1';
-$dbName = 'mylaboipi';
-$dbUser = 'root';
-$dbPass = '';
++$host = '127.0.0.1';
++$db   = 'mylaboipi';
++$user = 'root';
++$pass = '';
 
 try {
     // Création de l'objet PDO pour établir la connexion
