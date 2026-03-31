@@ -1,3 +1,8 @@
+import 'package:flutter/material.dart';
+import '../models/equipment.dart';
+
+
+
 class ReturnEquipmentPage extends StatelessWidget {
   final List<Equipment> equipments;
 
