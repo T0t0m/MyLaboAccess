@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+
 import '../models/equipment.dart';
-
-
 
 class BorrowEquipmentPage extends StatelessWidget {
   final List<Equipment> equipments;

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+
+import 'pages/admin_panel.dart';
+import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
-import 'pages/admin_panel.dart';
-import 'models/user.dart';
-import 'services/api_service.dart';
-import 'home_page.dart';
-import 'pages/borrow_equipment_page.dart';
-import 'pages/return_equipment_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,5 +52,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
