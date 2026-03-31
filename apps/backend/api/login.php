@@ -1,47 +1,20 @@
 <?php
-require_once '../database/db.php';
-
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type');
-
-$input = json_decode(file_get_contents('php://input'), true);
-if (!$input) {
-  echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
-  exit;
-}
-
-$identifier = trim($input['identifier'] ?? ''); // email or nom
-$password = $input['password'] ?? '';
-
-if (empty($identifier) || empty($password)) {
-  echo json_encode(['success' => false, 'message' => 'Identifier and password required']);
-  exit;
-}
++$host = '127.0.0.1';
++$db   = 'mylaboipi';
++$user = 'root';
++$pass = '';
 
 try {
-  $stmt = $pdo->prepare(
-    'SELECT id, email, nom, password_hash, role 
-    FROM users 
-    WHERE email = ? OR nom = ? 
-    LIMIT 1'
-  );
+    // Création de l'objet PDO pour établir la connexion
+    $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+  ]);
+    ]);
 
-  $stmt->execute([$identifier, $identifier]);
-  $user = $stmt->fetch();
-
-  if (!$user) {
-    echo json_encode(['success' => false, 'message' => 'Utilisateur non trouvé']);
-    exit;
-  }
-
-  if (!password_verify($password, $user['password_hash'])) {
-    echo json_encode(['success' => false, 'message' => 'Mot de passe incorrect']);
-    exit;
-  }
-
-  // Successful login
-  echo json_encode(['success' => true, 'message' => 'Connexion réussie', 'email' => $user['email'], 'role' => $user['role'], 'nom' => $user['nom']]);
-} catch (Exception $e) {
-  echo json_encode(['success' => false, 'message' => 'Erreur serveur: ' . $e->getMessage()]);
+    // Forcer l'encodage UTF-8 pour les échanges avec la base
+    $pdo->exec("SET CHARACTER SET utf8");
+} catch (PDOException $e) {
+    // En cas d'erreur de connexion, arrêt du script avec un message
+    die("Erreur connexion DB : " . $e->getMessage());
 }
