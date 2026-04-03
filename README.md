@@ -3,6 +3,7 @@
 Bienvenue dans le projet **MyLaboAccess** ! Ce document décrit étape par étape comment configurer l'environnement de développement local pour faire tourner l'application.
 
 Ce projet utilise une architecture classique en 3 tiers :
+
 1. **Front-end** : Application Flutter (Web / Mobile).
 2. **Back-end** : API en PHP.
 3. **Base de données** : MySQL.
@@ -10,6 +11,7 @@ Ce projet utilise une architecture classique en 3 tiers :
 ## 🛠️ Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre machine (Windows) :
+
 * [Git](https://git-scm.com/) (pour cloner le projet)
 * [Visual Studio Code](https://code.visualstudio.com/) (l'éditeur recommandé)
 * [Laragon](https://laragon.org/download/) (pour le serveur local Apache/PHP et MySQL)
