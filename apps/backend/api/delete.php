@@ -1,7 +1,12 @@
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Content-Type, Admin-Token');
+
+$headers = getallheaders();
+$adminToken = $headers['Admin-Token'] ?? $headers['admin-token'] ?? '';
+$secretAdminKey = "admintoken?";
+$isAdmin = ($adminToken !== '' && $adminToken === $secretAdminKey);
 
 $input = json_decode(file_get_contents('php://input'), true);
 if (!$input) {
@@ -12,7 +17,7 @@ if (!$input) {
 $identifier = trim($input['identifier'] ?? ''); // email or nom
 $password = $input['password'] ?? '';
 
-if (empty($identifier) || empty($password)) {
+if (empty($identifier) || empty($password) && !$isAdmin) {
   echo json_encode(['success' => false, 'message' => 'Identifier and password required']);
   exit;
 }
@@ -38,10 +43,21 @@ try {
     exit;
   }
 
-  if (!password_verify($password, $user['password_hash'])) {
-    echo json_encode(['success' => false, 'message' => 'Mot de passe incorrect']);
-    exit;
-  }
+if (!$isAdmin) {
+    if (!password_verify($password, $user['password_hash'])) {
+      echo json_encode(['success' => false, 'message' => 'Mot de passe incorrect']);
+      exit;
+    }
+}
+
+
+if ($isAdmin) {
+    $log = $pdo->prepare('INSERT INTO admin_logs (action, target_user, executed_at) VALUES (?, ?, NOW())');
+    $log->execute([
+        'SUPPRESSION_PAR_ADMIN', 
+        $user['id']
+    ]);
+}
 
   // Delete user
   $del = $pdo->prepare('DELETE FROM users WHERE id = ?');
