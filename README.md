@@ -36,11 +36,12 @@ flutter pub get
 
 L'application Flutter a besoin de communiquer avec une API PHP locale.
 
-1. Dans les fichiers de ce projet, trouvez le dossier `apps/backend/api`.
-2. **Copiez** le dossier `api` complet.
-3. **Collez-le** dans le répertoire web de Laragon, par défaut : `C:\laragon\www\`.
-*(Vous devriez avoir `C:\laragon\www\api\register.php`, etc.)*
-4. Lancez **Laragon** et cliquez sur **Start All** (Tout démarrer).
+1. Dans les fichiers de ce projet, trouvez le dossier `apps/backend`.
+2. **Copiez** les dossiers qui s'y trouvent.
+3. Dans le répertoire web de Laragon, **créez** un dossier nommé : `mylabo_db`. Vous devriez obtenir `C:\laragon\www\mylabo_db`.
+4. Dans ce nouveau dossier, **collez** les dossiers copiés plus tôt.
+*(Vous devriez avoir `C:\laragon\www\mylabo_db\api\`, etc.)*
+5. Lancez **Laragon** et cliquez sur **Start All** (Tout démarrer).
 
 ## 🗄️ Étape 3 : Création de la base de données
 

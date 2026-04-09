@@ -3,13 +3,16 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *'); // Attention : CORS ouvert à tous
 header('Access-Control-Allow-Headers: Content-Type, Admin-Token');
 
-// 1. Vérification du token d'administration
+// 1. Inclusion de la connexion à la base de données (provenant de la branche develop)
+require_once '../database/db.php';
+
+// 2. Vérification du token d'administration (provenant de ta branche)
 $headers = getallheaders();
 $adminToken = $headers['Admin-Token'] ?? $headers['admin-token'] ?? '';
 $secretAdminKey = "admintoken?";
 $isAdmin = ($adminToken !== '' && $adminToken === $secretAdminKey);
 
-// 2. Lecture et validation des données JSON (identifiant et mot de passe)
+// 3. Lecture et validation des données JSON (identifiant et mot de passe)
 $input = json_decode(file_get_contents('php://input'), true);
 if (!$input) {
   echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
@@ -26,19 +29,8 @@ if (empty($identifier) || empty($password) && !$isAdmin) {
 }
 
 try {
-  // 3. Connexion BDD
-  // TODO : Utiliser db.php à la place
-  $dbHost = '127.0.0.1';
-  $dbName = 'mylaboipi';
-  $dbUser = 'root';
-  $dbPass = '';
-
-  $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-  ]);
-
   // 4. Recherche de l'utilisateur
+  // (La variable $pdo est censée être initialisée dans le fichier ../database/db.php)
   $stmt = $pdo->prepare('SELECT id, email, nom, password_hash FROM users WHERE email = ? OR nom = ? LIMIT 1');
   $stmt->execute([$identifier, $identifier]);
   $user = $stmt->fetch();
@@ -69,5 +61,8 @@ try {
 
   echo json_encode(['success' => true, 'message' => 'Compte supprimé']);
 } catch (Exception $e) {
-  echo json_encode(['success' => false, 'message' => 'Erreur serveur: ' . $e->getMessage()]);
+  echo json_encode([
+    'success' => false,
+    'message' => 'Erreur serveur: '  //. $e->getMessage()
+  ]);
 }
