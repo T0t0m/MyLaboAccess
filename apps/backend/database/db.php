@@ -3,7 +3,7 @@
 // - host : serveur de base de données
 // - dbname : nom de la base de données
 // - charset : encodage UTF-8
-$dsn = 'mysql:host=localhost;dbname=projettutore2;charset=utf8';
+$dsn = 'mysql:host=localhost;dbname=mylaboipi;charset=utf8mb4';
 
 // Identifiants de connexion à la base de données
 $user = "root";
