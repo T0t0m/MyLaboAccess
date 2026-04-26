@@ -12,7 +12,7 @@ if (!$input) {
 
 $email = trim($input['email'] ?? '');
 $nom = trim($input['nom'] ?? '');
-$role = $input['role'] ?? 'utilisateur';
+$role = 'utilisateur';
 $password = $input['password'] ?? '';
 
 if (empty($email) || empty($password)) {
