@@ -34,6 +34,11 @@ try {
     if ($row) $userId = $row['id'];
   }
 
+  if (!$userId) {
+    echo json_encode(['success' => false, 'message' => 'Utilisateur introuvable']);
+    exit;
+  }
+
   $stmt = $pdo->prepare('INSERT INTO reports (user_id, equipment_name, quantity, description) VALUES (?, ?, ?, ?)');
   $stmt->execute([$userId, $equipment_name, $quantity, $description]);
 
