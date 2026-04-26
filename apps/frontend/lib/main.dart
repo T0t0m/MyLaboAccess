@@ -77,10 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
     final user = ModalRoute.of(context)?.settings.arguments;
     String userEmail = '';
     UserRole? role;
+
     if (user != null && user is User) {
       userEmail = user.email;
       role = user.role;
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -98,7 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 2,
         actions: [
-          // Bouton d'accès au panneau admin (visible uniquement pour les admins)
           if (role == UserRole.admin)
             IconButton(
               icon: Icon(Icons.admin_panel_settings,
@@ -115,6 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
               String? selectedEquipment;
               int quantity = 1;
               TextEditingController descController = TextEditingController();
+
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
@@ -125,8 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           DropdownButtonFormField<String>(
-                            decoration:
-                                const InputDecoration(labelText: 'Matériel dégradé'),
+                            decoration: const InputDecoration(
+                                labelText: 'Matériel dégradé'),
                             initialValue: selectedEquipment,
                             items: [
                               for (var eq in equipments)
@@ -140,12 +142,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'Quantité dégradée'),
+                            decoration: const InputDecoration(
+                                labelText: 'Quantité dégradée'),
                             keyboardType: TextInputType.number,
                             initialValue: '1',
-                            onChanged: (val) => setState(
-                                () => quantity = int.tryParse(val) ?? 1),
+                            onChanged: (val) =>
+                                setState(() => quantity = int.tryParse(val) ?? 1),
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
@@ -165,14 +167,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        // Envoi du signalement via ApiService centralisé
                         final result = await ApiService.sendReport(
                           userEmail,
                           selectedEquipment ?? '',
                           quantity,
                           descController.text,
                         );
+
+                        if (!mounted) return;
+
                         Navigator.pop(context);
+
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -197,23 +202,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           PopupMenuButton<String>(
             icon: const Icon(Icons.settings, color: Colors.black87),
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'delete',
-                child: Text('Supprimer le compte'),
-              ),
-              const PopupMenuItem(
-                value: 'edit',
-                child: Text('Modifier email/mot de passe'),
-              ),
-              const PopupMenuItem(
-                value: 'help',
-                child: Text('Besoin d\'aide ?'),
-              ),
+            itemBuilder: (context) => const [
+              PopupMenuItem(value: 'delete', child: Text('Supprimer le compte')),
+              PopupMenuItem(value: 'edit', child: Text('Modifier email/mot de passe')),
+              PopupMenuItem(value: 'help', child: Text('Besoin d\'aide ?')),
             ],
             onSelected: (value) {
               if (value == 'delete') {
-                // Supprimer le compte : demander le mot de passe pour vérification
                 if (userEmail.isEmpty || userEmail == 'invité') {
                   showDialog(
                     context: context,
@@ -230,6 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 } else {
                   TextEditingController pwdCtrl = TextEditingController();
                   bool isLoading = false;
+
                   showDialog(
                     context: context,
                     builder: (context) => StatefulBuilder(
@@ -244,8 +240,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               const SizedBox(height: 8),
                               TextField(
                                 controller: pwdCtrl,
-                                decoration:
-                                    const InputDecoration(labelText: 'Mot de passe'),
+                                decoration: const InputDecoration(
+                                    labelText: 'Mot de passe'),
                                 obscureText: true,
                               ),
                             ],
@@ -259,8 +255,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ? null
                                   : () async {
                                       final pwd = pwdCtrl.text;
+
                                       if (pwd.isEmpty) {
-                                        // show inline error
                                         showDialog(
                                           context: context,
                                           builder: (context) => AlertDialog(
@@ -277,20 +273,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                         );
                                         return;
                                       }
+
                                       setState(() => isLoading = true);
                                       final result =
                                           await ApiService.deleteAccount(
                                               userEmail, pwd);
                                       setState(() => isLoading = false);
+
+                                      if (!mounted) return;
+
                                       Navigator.pop(context);
+
                                       if (result['success'] == true) {
-                                        // rediriger vers l'écran de connexion
                                         showDialog(
                                           context: context,
                                           builder: (context) => AlertDialog(
                                             title: const Text('Supprimé'),
-                                            content: Text(result['message'] ??
-                                                'Compte supprimé.'),
+                                            content:
+                                                Text(result['message'] ?? ''),
                                             actions: [
                                               TextButton(
                                                 onPressed: () {
@@ -309,8 +309,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           context: context,
                                           builder: (context) => AlertDialog(
                                             title: const Text('Erreur'),
-                                            content: Text(result['message'] ??
-                                                'Erreur lors de la suppression.'),
+                                            content:
+                                                Text(result['message'] ?? ''),
                                             actions: [
                                               TextButton(
                                                   onPressed: () =>
@@ -335,73 +335,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 }
-              } else if (value == 'edit') {
-                TextEditingController emailController = TextEditingController();
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Réinitialiser email/mot de passe'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          controller: emailController,
-                          decoration: const InputDecoration(labelText: 'Votre email'),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                            'Un lien de réinitialisation sera envoyé à cette adresse.'),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Fermer'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // TODO: Envoyer le lien de réinitialisation (front seulement)
-                          Navigator.pop(context);
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Lien envoyé'),
-                              content: Text(
-                                  'Un lien de réinitialisation a été envoyé à ${emailController.text}.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        child: const Text('Envoyer'),
-                      ),
-                    ],
-                  ),
-                );
-              } else if (value == 'help') {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Besoin d\'aide ?'),
-                    content: const Text('Contactez le support ou consultez la FAQ.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Fermer'),
-                      ),
-                    ],
-                  ),
-                );
               }
             },
           ),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.black87),
-            tooltip: 'Déconnexion',
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/');
             },
@@ -413,44 +351,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  child: const Text('Comment Emprunter ?'),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => const AlertDialog(
-                        title: Text('Emprunter du Matériel'),
-                        content: Text(
-                            'Vérifiez le nombre de matériels disponibles avant d\'en prendre, puis allez dans l\'onglet "Emprunter du matériel et scannez le QRcode de l\'objet à emprunter".'),
-                      ),
-                    );
-                  },
-                ),
-                ElevatedButton(
-                  child: const Text('Comment Rendre ?'),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => const AlertDialog(
-                        title: Text('Rendre du Matériel'),
-                        content: Text(
-                            'Sélectionnez le matériel que vous souhaitez rendre dans l\'onglet "Rendre du matériel".'),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
             const SizedBox(height: 16),
             const Text(
               'Liste des équipements:',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -459,40 +363,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemBuilder: (context, index) {
                   final eq = equipments[index];
                   return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 3,
                     child: ListTile(
-                      leading: Icon(
-                        _getIconForEquipment(eq.name),
-                        color: Colors.redAccent.shade700,
-                      ),
-                      title: Text(
-                        eq.name,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      trailing: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent.shade700,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          '${eq.quantity}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      subtitle: role == UserRole.invite
-                          ? const Text('Lecture seule',
-                              style: TextStyle(color: Colors.grey))
-                          : null,
-                      enabled: role == UserRole.utilisateur,
-                      // Ici, tu peux ajouter des actions de modification si role == utilisateur
+                      title: Text(eq.name),
+                      trailing: Text('${eq.quantity}'),
                     ),
                   );
                 },
@@ -500,95 +373,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton.extended(
-            heroTag: "borrow",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      BorrowEquipmentPage(equipments: equipments),
-                ),
-              );
-            },
-            label: const Text('Emprunter du matériel'),
-            icon: const Icon(Icons.add_shopping_cart),
-          ),
-          const SizedBox(height: 12),
-          FloatingActionButton.extended(
-            heroTag: "return",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      ReturnEquipmentPage(equipments: equipments),
-                ),
-              );
-            },
-            label: const Text('Rendre du matériel'),
-            icon: const Icon(Icons.assignment_return),
-          ),
-        ],
-      ),
-    );
-  }
-
-  IconData _getIconForEquipment(String equipment) {
-    switch (equipment.toLowerCase()) {
-      case 'écrans':
-        return Icons.monitor;
-      case 'routeurs':
-        return Icons.router;
-      case 'switches':
-        return Icons.device_hub;
-      case 'serveurs':
-        return Icons.storage;
-      case 'câbles réseau':
-        return Icons.cable;
-      case 'points d\'accès wifi':
-        return Icons.wifi;
-      default:
-        return Icons.devices_other;
-    }
-  }
-}
-
-class BorrowEquipmentPage extends StatelessWidget {
-  final List<Equipment> equipments;
-
-  const BorrowEquipmentPage({super.key, required this.equipments});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Emprunter du matériel'),
-      ),
-      body: const Center(
-        child: Text('Page pour emprunter du matériel.'),
-      ),
-    );
-  }
-}
-
-class ReturnEquipmentPage extends StatelessWidget {
-  final List<Equipment> equipments;
-
-  const ReturnEquipmentPage({super.key, required this.equipments});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Rendre du matériel'),
-      ),
-      body: const Center(
-        child: Text('Page pour rendre du matériel.'),
       ),
     );
   }
