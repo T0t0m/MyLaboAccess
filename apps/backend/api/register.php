@@ -4,6 +4,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
 
+require_once '../database/db.php';
+
 $input = json_decode(file_get_contents('php://input'), true);
 if (!$input) {
   echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
@@ -21,17 +23,6 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-  // Update these credentials to match your Laragon/MySQL setup
-  $dbHost = '127.0.0.1';
-  $dbName = 'mylaboipi';
-  $dbUser = 'root';
-  $dbPass = '';
-
-  $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-  ]);
-
   // Check if user exists
   $stmt = $pdo->prepare('SELECT id, email FROM users WHERE email = ? LIMIT 1');
   $stmt->execute([$email]);
