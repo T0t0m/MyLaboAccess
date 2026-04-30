@@ -21,16 +21,7 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-  // Update these credentials to match your Laragon/MySQL setup
-  $dbHost = '127.0.0.1';
-  $dbName = 'mylaboipi';
-  $dbUser = 'root';
-  $dbPass = '';
-
-  $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-  ]);
+  require_once '../database/db.php';
 
   // Check if user exists
   $stmt = $pdo->prepare('SELECT id, email FROM users WHERE email = ? LIMIT 1');
