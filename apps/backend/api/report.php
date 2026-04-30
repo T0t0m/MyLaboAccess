@@ -3,6 +3,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
 
+require_once '../database/db.php';
+
 // Lecture JSON
 $input = json_decode(file_get_contents('php://input'), true);
 if (!$input) {
@@ -26,16 +28,6 @@ $quantity = (int)($input['quantity'] ?? 1);
 $description = trim($input['description'] ?? '');
 
 try {
-  $dbHost = '127.0.0.1';
-  $dbName = 'mylaboipi';
-  $dbUser = 'root';
-  $dbPass = '';
-
-  $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-  ]);
-
   // Vérification du token en base
   $stmt = $pdo->prepare("SELECT user_id FROM user_tokens WHERE token = ? AND expires_at > NOW() LIMIT 1");
   $stmt->execute([$token]);
@@ -53,5 +45,5 @@ try {
 
   echo json_encode(['success' => true, 'message' => 'Signalement enregistré']);
 } catch (Exception $e) {
-  echo json_encode(['success' => false, 'message' => 'Erreur serveur: ' . $e->getMessage()]);
+  echo json_encode(['success' => false, 'message' => 'Erreur serveur']);
 }
