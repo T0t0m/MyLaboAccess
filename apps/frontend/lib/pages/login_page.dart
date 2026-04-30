@@ -32,16 +32,23 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
     final email = emailController.text.trim();
     final password = passwordController.text;
+
     if (email.isEmpty || password.isEmpty) {
       setState(() {
         errorMessage = 'Veuillez remplir les champs.';
       });
       return;
     }
+
     setState(() => errorMessage = '');
+
     final result = await login(email, password);
+
+    if (!mounted) return;
+
     if (result['success'] == true) {
       final returnedEmail = result['email'] ?? email;
+
       setState(() => errorMessage = '');
 
       // Déterminer le rôle : si email contient 'admin', c'est un admin (temporaire pour test)
@@ -53,8 +60,9 @@ class _LoginPageState extends State<LoginPage> {
       final user = User(email: returnedEmail, role: userRole);
       Navigator.pushReplacementNamed(context, '/home', arguments: user);
     } else {
-      setState(
-          () => errorMessage = result['message'] ?? 'Erreur de connexion.');
+      setState(() => 
+        errorMessage = result['message'] ?? 'Erreur de connexion.'
+      );
     }
   }
 
@@ -63,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
     TextEditingController nomCtrl = TextEditingController();
     TextEditingController pwdCtrl = TextEditingController();
     String localError = '';
+
     showDialog(
       context: context,
       builder: (context) {
@@ -112,15 +121,18 @@ class _LoginPageState extends State<LoginPage> {
                     final email = emailCtrl.text.trim();
                     final nom = nomCtrl.text.trim();
                     final pwd = pwdCtrl.text;
+
                     if (email.isEmpty || nom.isEmpty || pwd.isEmpty) {
                       setState(() {
                         localError = 'Veuillez remplir tous les champs.';
                       });
                       return;
                     }
+
                     // Validation simple du format attendu : Niveau_NOM.Prenom
                     final pattern =
                         RegExp(r'^[A-Za-z0-9]+_[A-Za-z]+\.[A-Za-z]+$');
+
                     if (!pattern.hasMatch(nom)) {
                       setState(() {
                         localError =
@@ -134,23 +146,32 @@ class _LoginPageState extends State<LoginPage> {
                     final level = parts[0];
                     final rest = parts.sublist(1).join('_');
                     final dotIndex = rest.indexOf('.');
+
                     if (dotIndex <= 0) {
                       setState(() {
                         localError = 'Format du nom invalide.';
                       });
                       return;
                     }
+
                     final rawLast = rest.substring(0, dotIndex);
                     final rawFirst = rest.substring(dotIndex + 1);
+
                     final lastUpper = rawLast.toUpperCase();
                     final firstCap = rawFirst.isEmpty
                         ? rawFirst
                         : (rawFirst[0].toUpperCase() +
                             rawFirst.substring(1).toLowerCase());
+
                     final normalizedNom = '${level}_$lastUpper.$firstCap';
+
                     setState(() => localError = '');
+
                     final result = await register(
                         email, normalizedNom, 'utilisateur', pwd);
+
+                    if (!mounted) return;
+
                     if (result['success'] == true) {
                       Navigator.pop(context);
                       Navigator.pushReplacementNamed(context, '/home',
@@ -177,6 +198,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       errorMessage = '';
     });
+
     final user = User(email: 'invité', role: UserRole.invite);
     Navigator.pushReplacementNamed(context, '/home', arguments: user);
   }
