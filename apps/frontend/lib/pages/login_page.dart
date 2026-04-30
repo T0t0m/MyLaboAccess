@@ -51,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
 
       setState(() => errorMessage = '');
 
+      // Déterminer le rôle : si email contient 'admin', c'est un admin (temporaire pour test)
       UserRole userRole = UserRole.utilisateur;
       if (email.toLowerCase().contains('admin') || password == 'admin123') {
         userRole = UserRole.admin;
@@ -59,8 +60,9 @@ class _LoginPageState extends State<LoginPage> {
       final user = User(email: returnedEmail, role: userRole);
       Navigator.pushReplacementNamed(context, '/home', arguments: user);
     } else {
-      setState(() =>
-          errorMessage = result['message'] ?? 'Erreur de connexion.');
+      setState(() => 
+        errorMessage = result['message'] ?? 'Erreur de connexion.'
+      );
     }
   }
 
@@ -127,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                       return;
                     }
 
+                    // Validation simple du format attendu : Niveau_NOM.Prenom
                     final pattern =
                         RegExp(r'^[A-Za-z0-9]+_[A-Za-z]+\.[A-Za-z]+$');
 
@@ -138,6 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                       return;
                     }
 
+                    // Normalisation avant envoi
                     final parts = nom.split('_');
                     final level = parts[0];
                     final rest = parts.sublist(1).join('_');
@@ -163,8 +167,8 @@ class _LoginPageState extends State<LoginPage> {
 
                     setState(() => localError = '');
 
-                    final result =
-                        await register(email, normalizedNom, 'utilisateur', pwd);
+                    final result = await register(
+                        email, normalizedNom, 'utilisateur', pwd);
 
                     if (!mounted) return;
 
